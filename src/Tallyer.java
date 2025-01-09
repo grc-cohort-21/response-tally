@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * The Tallyer class provides functionality for reading ID and topic pairs from user input,
@@ -51,9 +48,18 @@ public class Tallyer {
      */
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
-        // TODO: Implement this method
+        Map<String, Integer> topicTally = new HashMap<>();
 
-        return null;
+        for (String topic : topics) {
+            if (!topicTally.containsKey(topic)) {
+                topicTally.put(topic, 1);
+            }
+            else {
+                topicTally.put(topic, topicTally.get(topic) + 1);
+            }
+        }
+
+        return topicTally;
     }
 
     /**
@@ -69,9 +75,32 @@ public class Tallyer {
      * @return a map containing topics as keys and their occurrence counts as values
      */
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
-      // WAVE 2
-      // TODO: Implement this method
+      Map<String, Integer> filteredTally = new HashMap<>();
+      Map<String, Integer> idTally = new HashMap<>();
+      Set<String> badIds = new HashSet<>();
 
-      return null;
+    // Count all occurences of each id, store results in a map
+    for (String id : ids) {
+            if (!idTally.containsKey(id)) {
+                idTally.put(id, 1);
+            }
+            else {
+                idTally.put(id, idTally.get(id) + 1);
+            }
+        }
+
+    for (int i = 0; i < ids.size(); i++) {
+        if (idTally.get(ids.get(i)) > 2) {
+            continue;
+        }
+        if (!filteredTally.containsKey(topics.get(i))) {
+            filteredTally.put(topics.get(i), 1);
+        }
+        else {
+            filteredTally.put(topics.get(i), filteredTally.get(topics.get(i)) + 1);
+        }
+    }
+
+      return filteredTally;
   }
 }
