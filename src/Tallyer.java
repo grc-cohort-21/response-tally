@@ -2,12 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /**
  * The Tallyer class provides functionality for reading ID and topic pairs from user input,
  * and tallying the number of occurrences of each topic.
  */
-public class Tallyer {
+public class Tallyer 
+{
 
     /**
      * The main method serves as the entry point for the program. It reads pairs of IDs and topics
@@ -16,17 +18,32 @@ public class Tallyer {
      *
      * @param args command-line arguments (not used in this implementation)
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         Scanner input = new Scanner(System.in);
 
         List<String> ids = new ArrayList<>();
         List<String> topics = new ArrayList<>();
         
         // Reading input for IDs and topics
-        // Assumes file is well formed into pairs
-        while (input.hasNext()) {
-            ids.add(input.next());
-            topics.add(input.next());
+        // modified to account for malformed files
+        while (input.hasNextLine()) 
+        {
+            // skip empty lines in file
+            String line = input.nextLine();
+            if(line.isEmpty())
+            {
+               continue;
+            }
+
+            // only add ID and topic to applicable lists if the line contains both items
+            String[] lineArray = line.split(" ");
+            if (lineArray.length == 2) 
+            {
+                ids.add(lineArray[0]);
+                topics.add(lineArray[1]);
+            }
+
         }
         input.close();
         
@@ -34,12 +51,20 @@ public class Tallyer {
         Map<String, Integer> topicCounts = tallyTopics(topics);
         System.out.println("Here are how many times each topic appears (unfiltered):");
         System.out.println(topicCounts);
+        System.out.println();
 
         // Wave 2
         Map<String, Integer> topicCountsFiltered = tallyTopicsFiltered(ids, topics);
         System.out.println("Here are how many times each topic appears (filtered):");
         System.out.println(topicCountsFiltered);
-    }
+        System.out.println();
+
+        // Extra Challenge #3
+        Map<String,String> removed = removedFromTally(ids);
+        System.out.println("Here are the users who did not have their votes counted:"); 
+        System.out.println(removed);
+
+        }
 
     /**
      * Tally the occurrences of each topic from the provided list of topics.
@@ -52,8 +77,21 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
         // TODO: Implement this method
+        Map<String, Integer> newMap = new TreeMap<>();
 
-        return null;
+        for(String word: topics)
+        {
+            if(!newMap.containsKey(word))
+            {
+                newMap.put(word, 1);
+            }
+            else
+            {
+                int count = newMap.get(word);
+                newMap.put(word, count+1);
+            }
+        }
+        return newMap;
     }
 
     /**
@@ -68,10 +106,55 @@ public class Tallyer {
      * @param topics a list of strings representing the topics to be tallied
      * @return a map containing topics as keys and their occurrence counts as values
      */
-    public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
+    public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) 
+    {
       // WAVE 2
       // TODO: Implement this method
+      Map<String, Integer> idCount = tallyTopics(ids);
+      Map<String, Integer> topicsCount = new TreeMap<>();
+    
+        for(int i = 0; i<topics.size(); i++)
+        {
+        if(idCount.get(ids.get(i)).equals(2))
+        {
+            if(!topicsCount.containsKey(topics.get(i)))
+            {
+                topicsCount.put(topics.get(i), 1);
+            }
+            else
+            {
+                int count = topicsCount.get(topics.get(i));
+                topicsCount.put(topics.get(i), count+1);
+            }
+        }
+    }
+      return topicsCount;
+    }
 
-      return null;
-  }
+     
+    /**
+     * generates a treemap of users who did not enter exactly 2 topics and did not have their votes counted.
+     * @param ids a list of strings representing IDs associated with each topic
+     * @return a map containing user ID's as keys and the reason their votes were not counted as values
+     */
+    public static Map<String, String> removedFromTally(List<String> ids) 
+    {
+     
+
+      Map<String, Integer> idCount = tallyTopics(ids);
+      Map<String, String> removed = new TreeMap<>();
+      
+      for (Map.Entry<String, Integer> entry : idCount.entrySet())
+      {
+        String id = entry.getKey();
+        int count = entry.getValue();
+
+        if (count < 2) {
+            removed.put(id, "Not Enough Votes");
+        } else if (count > 2) {
+            removed.put(id, "Too Many Votes");
+        }
+    }
+    return removed;
+    }
 }
