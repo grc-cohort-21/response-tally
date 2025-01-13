@@ -84,25 +84,31 @@ public class Tallyer {
      */
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
       // WAVE 2
-      // TODO: Implement this method
 
     // Tracks how many times each ID voted
     Map<String, Integer> voteCount = new HashMap<>();
-
-    // Primary Map
+    // Return Map
     Map<String, Integer> topicCount = new HashMap<>();
 
     // Go through each ID as assign AMOUNTS of votes to the ID
+        for(String vote : ids){
+        // if first time
+        if(!voteCount.containsKey(vote)){
+            voteCount.put(vote, 1);
+        } // every vote after
+        else{
+            int i = voteCount.get(vote);
+            i++;
+            voteCount.put(vote, i);
+        }
+    }
 
-    int k = 0;
-    for(String word : topics){
-
-        // Getting What ID are we working with
-        String currentID = ids.get(k);
-        // Checking how many times the ID shows up in the ids list
-        // Gotten from https://stackoverflow.com/questions/505928/how-to-count-the-number-of-occurrences-of-an-element-in-a-list
-        int idShowsUp = Collections.frequency(ids, currentID);
-
+    // iterate through all of the votes again
+    for(int k = 0; k < ids.size(); k++){
+        // See how many times something shows up
+        int idShowsUp = voteCount.get(ids.get(k));
+        // get the actual word
+        String word = topics.get(k);
         if(idShowsUp == 2){        
             if(!topicCount.containsKey(word)){
                 topicCount.put(word, 1);
@@ -113,7 +119,6 @@ public class Tallyer {
                 topicCount.put(word, i);
             }
         }
-    k++;
     }
     return topicCount;
   }
