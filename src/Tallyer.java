@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.Collections;
 
 /**
  * The Tallyer class provides functionality for reading ID and topic pairs from user input,
@@ -52,7 +53,6 @@ public class Tallyer {
      */
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
-        // TODO: Implement this method
         Map<String, Integer> topicCount = new HashMap<>();
         
         // go through the list of words
@@ -67,7 +67,6 @@ public class Tallyer {
                 topicCount.put(word, i);
             }
         }
-
         return topicCount;
     }
 
@@ -87,21 +86,35 @@ public class Tallyer {
       // WAVE 2
       // TODO: Implement this method
 
-    // Tracks how many times each student voted
+    // Tracks how many times each ID voted
     Map<String, Integer> voteCount = new HashMap<>();
 
-    for(String vote : ids){
-            // if first time
-            if(!voteCount.containsKey(vote)){
-                voteCount.put(vote, 1);
+    // Primary Map
+    Map<String, Integer> topicCount = new HashMap<>();
+
+    // Go through each ID as assign AMOUNTS of votes to the ID
+
+    int k = 0;
+    for(String word : topics){
+
+        // Getting What ID are we working with
+        String currentID = ids.get(k);
+        // Checking how many times the ID shows up in the ids list
+        // Gotten from https://stackoverflow.com/questions/505928/how-to-count-the-number-of-occurrences-of-an-element-in-a-list
+        int idShowsUp = Collections.frequency(ids, currentID);
+
+        if(idShowsUp == 2){        
+            if(!topicCount.containsKey(word)){
+                topicCount.put(word, 1);
             }
             else{
-                int i = voteCount.get(vote);
+                int i = topicCount.get(word);
                 i++;
-                voteCount.put(vote, i);
+                topicCount.put(word, i);
             }
+        }
+    k++;
     }
-    System.out.println(voteCount);
-    return null;
+    return topicCount;
   }
 }
