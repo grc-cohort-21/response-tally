@@ -87,6 +87,21 @@ public class Tallyer {
       // WAVE 2
       // TODO: Implement this method
 
-      return null;
+    // Tracks how many times each student voted
+    Map<String, Integer> voteCount = new HashMap<>();
+
+    for(String vote : ids){
+            // if first time
+            if(!voteCount.containsKey(vote)){
+                voteCount.put(vote, 1);
+            }
+            else{
+                int i = voteCount.get(vote);
+                i++;
+                voteCount.put(vote, i);
+            }
+    }
+    System.out.println(voteCount);
+    return null;
   }
 }
