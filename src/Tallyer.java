@@ -68,7 +68,7 @@ public class Tallyer {
             }
         }
 
-        return null;
+        return topicCount;
     }
 
     /**
