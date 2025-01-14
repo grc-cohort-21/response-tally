@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -7,7 +8,8 @@ import java.util.Scanner;
  * The Tallyer class provides functionality for reading ID and topic pairs from user input,
  * and tallying the number of occurrences of each topic.
  */
-public class Tallyer {
+public class Tallyer 
+{
 
     /**
      * The main method serves as the entry point for the program. It reads pairs of IDs and topics
@@ -16,7 +18,8 @@ public class Tallyer {
      *
      * @param args command-line arguments (not used in this implementation)
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         Scanner input = new Scanner(System.in);
 
         List<String> ids = new ArrayList<>();
@@ -24,7 +27,8 @@ public class Tallyer {
         
         // Reading input for IDs and topics
         // Assumes file is well formed into pairs
-        while (input.hasNext()) {
+        while (input.hasNext()) 
+        {
             ids.add(input.next());
             topics.add(input.next());
         }
@@ -49,11 +53,25 @@ public class Tallyer {
      * @param topics a list of strings representing the topics to be tallied
      * @return a map containing topics as keys and their occurrence counts as values
      */
-    public static Map<String, Integer> tallyTopics(List<String> topics) {
+    public static Map<String, Integer> tallyTopics(List<String> topics) 
+    {
         // WAVE 1
         // TODO: Implement this method
+        Map<String, Integer> tally = new HashMap<String,Integer>();
+        
+        for (String id : topics) 
+        {
+               if (!tally.containsKey(id)) 
+               {
+                    tally.put(id, 1);
+               }
+               else
+               {
+                    tally.put(id, tally.get(id) + 1);
+               }
+        }
 
-        return null;
+        return tally;
     }
 
     /**
@@ -68,10 +86,62 @@ public class Tallyer {
      * @param topics a list of strings representing the topics to be tallied
      * @return a map containing topics as keys and their occurrence counts as values
      */
-    public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
+     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics)
+     {
       // WAVE 2
       // TODO: Implement this method
+      
+      // Run through ids, creating a new map of counts
+      Map<String, Integer> idCount = new HashMap<String, Integer>();
+      for (String item : ids) 
+      {
+          if (!idCount.containsKey(item)) 
+          {
+               idCount.put(item, 1);
+          }
+          else
+          {
+               idCount.put(item, idCount.get(item) + 1);
+          }
 
-      return null;
-  }
+      }
+
+      //
+      Map<String, Integer> filteredMap = new HashMap<String, Integer>();
+      for (String item : idCount.keySet()) // Run through the map of counts
+      {
+          if (idCount.get(item).equals(2)) // Compare the counts against the requirement of 2
+          {
+               for (int i = 0; i < ids.size(); i++) // Run through the id list
+               {
+                    if (ids.get(i).equals(item)) // If the id is safe add to the returned map
+                    {
+                         if (!filteredMap.containsKey(topics.get(i))) 
+                         {
+                              filteredMap.put(topics.get(i), 1);
+                         }
+                         else
+                         {
+                              filteredMap.put(topics.get(i), filteredMap.get(topics.get(i)) + 1);
+                         }
+                    }
+                    else // if the id is offendinng don't add to map
+                    {
+                         // Do nothing
+                    }
+
+               }
+
+          }
+          else // if the compare count isn't 2, just ignore
+          {
+               // Do nothing
+          }
+
+      }
+
+      return filteredMap;
+      
+     }
+
 }
