@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -52,8 +53,19 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
         // TODO: Implement this method
+        Map<String, Integer> tallys = new HashMap<String, Integer>();
+        for(String topic : topics) {
+            if(!tallys.containsKey(topic)){
+                tallys.put(topic, 1);
+            }
+            else{
+                int currentCount = tallys.get(topic);
+                int newCount = currentCount + 1;
+                tallys.put(topic, newCount);
+            }
+        }
 
-        return null;
+        return tallys;
     }
 
     /**
@@ -71,7 +83,42 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
       // WAVE 2
       // TODO: Implement this method
+      Map<String, Integer> tallys = new HashMap<String, Integer>();
+      Map<String, Integer> numIds = new HashMap<String, Integer>();
+      for (String id : ids) {
+        if(!numIds.containsKey(id)){
+            numIds.put(id, 1);
+        }
+        else{
+            int currentCount = numIds.get(id);
+            int newCount = currentCount + 1;
+            numIds.put(id, newCount);
+        }
+      }
+      List<String> newTopics = new ArrayList<String>();
+      Map<String, Integer> idRepeat = new HashMap<String, Integer>();
+      for (String id2 : ids) {
+        if (numIds.get(id2) == 2 && !idRepeat.containsKey(id2)) {
+            for (int i = 0; i < ids.size(); i++) {
+                if (ids.get(i).equals(id2)) {
+                    newTopics.add(topics.get(i));
+                }
+            }
+            idRepeat.put(id2, 1);
+        }
+      }
+      //System.out.println(newTopics);
+      for(String topic : newTopics) {
+        if(!tallys.containsKey(topic)){
+            tallys.put(topic, 1);
+        }
+        else{
+            int currentCount = tallys.get(topic);
+            int newCount = currentCount + 1;
+            tallys.put(topic, newCount);
+        }
+    }
 
-      return null;
+      return tallys;
   }
 }
