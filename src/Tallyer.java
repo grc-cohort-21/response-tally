@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -30,7 +31,7 @@ public class Tallyer {
         }
         input.close();
         
-        // Wave 1
+        // Wave 1 (unfiltered)
         Map<String, Integer> topicCounts = tallyTopics(topics);
         System.out.println("Here are how many times each topic appears (unfiltered):");
         System.out.println(topicCounts);
@@ -52,8 +53,19 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
         // TODO: Implement this method
-
-        return null;
+       
+        Map<String, Integer> total = new HashMap<>();
+        for (String word : topics) {
+            if(!total.containsKey(word)) {
+                total.put(word,1);
+            }
+            else {
+                int currentCount = total.get(word);
+                //int count = currentCount + 1;
+                total.put(word, currentCount + 1);
+            }
+        }
+        return total;
     }
 
     /**
@@ -70,8 +82,34 @@ public class Tallyer {
      */
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
       // WAVE 2
-      // TODO: Implement this method
+      // TODO: Implement this methodMap<String, List<String>> userVotes = new HashMap<>();
+        Map<String, List<String>> userVotes = new HashMap<>();
+        Map<String, Integer> filteredCounts = new HashMap<>();
 
-      return null;
+        // Group topics by user IDs
+        for (int i = 0; i < ids.size(); i++) {
+            String id = ids.get(i);
+            String topic = topics.get(i);
+
+            userVotes.putIfAbsent(id, new ArrayList<>());
+            userVotes.get(id).add(topic);
+        }
+
+        // users who voted exactly twice
+        for (String id : userVotes.keySet()) {
+            List<String> votes = userVotes.get(id);
+
+            if (votes.size() == 2) {
+                for (String vote : votes) {
+                    if (!filteredCounts.containsKey(vote)) {
+                        filteredCounts.put(vote, 1);
+                    } else {
+                        filteredCounts.put(vote, filteredCounts.get(vote) + 1);
+                    }
+                }
+            }
+        }
+
+        return filteredCounts;
   }
 }
