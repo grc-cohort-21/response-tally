@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -53,14 +54,29 @@ public class Tallyer {
         // WAVE 1
         // TODO: Implement this method
 
-        return null;
+        Map<String, Integer> topicCount = new HashMap<>();
+        for(String topic : topics)
+        {
+            if (!topicCount.containsKey(topic)) 
+            {
+                topicCount.put(topic, 1);
+            }
+            else
+            {
+                int currentCount = topicCount.get(topic);
+                int newCount = currentCount + 1;
+                topicCount.put(topic, newCount);
+            }
+        }
+
+        return topicCount;
     }
 
     /**
      * Tally the occurrences of valid votes for each topic from the provided lists of IDs and topics.
      * 
      * The lists are of equal length and are aligned: the id at index zero cast a vote for
-     * the topic at endex 0, the id at index 1 cast a vote for the topic at index 1, etc.
+     * the topic at index 0, the id at index 1 cast a vote for the topic at index 1, etc.
      * It returns a map where each topic is associated with the number of times it appears in the input.
      * However, any user who did not enter exactly 2 topics should not have their votes counted.
      *
@@ -72,6 +88,48 @@ public class Tallyer {
       // WAVE 2
       // TODO: Implement this method
 
-      return null;
+      Map<String, Integer> topicCount = new HashMap<>();
+      Map<String, Integer> newIds = new HashMap<>();
+      
+      for(String id : ids)
+      {
+        if(!newIds.containsKey(id))
+        {
+            newIds.put(id, 1);
+        }
+        else
+        {
+            int currentCount = topicCount.get(id);
+            int newCount = currentCount + 1;
+            topicCount.put(id, newCount);
+        }
+
+      }
+
+      for(String id : newIds.keySet())
+      {
+        if(!newIds.get(id) < 3)
+        {
+            newIds.remove(id);
+        }
+      }
+      
+      
+      for(String topic : topics)
+      {
+        
+        if (!topicCount.containsKey(topic)) 
+          {
+              topicCount.put(topic, 1);
+          }
+          else
+          {
+              int currentCount = topicCount.get(topic);
+              int newCount = currentCount + 1;
+              topicCount.put(topic, newCount);
+          }
+      }
+        
+        return topicCount;
   }
 }
