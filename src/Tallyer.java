@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.HashMap;
 
 /**
  * The Tallyer class provides functionality for reading ID and topic pairs from user input,
@@ -32,6 +33,9 @@ public class Tallyer {
         
         // Wave 1
         Map<String, Integer> topicCounts = tallyTopics(topics);
+        //topicCounts.put(1 , lists);
+
+
         System.out.println("Here are how many times each topic appears (unfiltered):");
         System.out.println(topicCounts);
 
@@ -49,11 +53,26 @@ public class Tallyer {
      * @param topics a list of strings representing the topics to be tallied
      * @return a map containing topics as keys and their occurrence counts as values
      */
-    public static Map<String, Integer> tallyTopics(List<String> topics) {
+    public static Map<String, Integer> tallyTopics(List<String> topics) 
+    {
         // WAVE 1
         // TODO: Implement this method
+        Map<String, Integer> total = new HashMap<>();
 
-        return null;
+        for(String topic:topics) //assigning topic as key
+        {
+            if (!total.containsKey(topic)) //if the total isn't in there
+            {
+            total.put(topic, 1); //put the total and assign it value 1
+            } 
+            else 
+            {
+                 int currentCount = total.get(topic); // temporary counter 
+                 total.put(topic, currentCount + 1); //if it does
+                 //contain total add 1 which turns integer to 2
+             }
+        }
+        return total; //
     }
 
     /**
@@ -70,8 +89,50 @@ public class Tallyer {
      */
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
       // WAVE 2
-      // TODO: Implement this method
+      // TODO: Implement this method 
+        Map<String, Integer> votes = new HashMap<>();
+        Map<String, Integer> total = new HashMap<>();
 
-      return null;
+        for(String ID:ids) //assigning key as ID 
+        {
+           if (!votes.containsKey(votes)) //if the votes isn't in there
+            {
+                votes.put(ID, 1); //put the votes and assign it value 1
+                //System.out.println(votes);
+            } 
+            else 
+            {
+                 int currentCount = votes.get(ID); // temporary counter 
+                 votes.put(ID, currentCount + 1); //if it does
+                 //contain word add 1 which turns integer to 2
+             }
+
+             
+        }
+
+        for(int i =0; i<topics.size(); i++)
+        {
+            if(votes.get(ids.get(i)) == 2)
+            {
+                if(!total.containsKey(topics.get(i)))
+                {
+                    total.put(topics.get(i), 1);
+                    System.out.println(total);
+                }
+                else 
+                {
+                    int currentCount = total.get(topics.get(i));
+                    int updatedCount = currentCount + 1;
+                    total.put(topics.get(i), updatedCount);
+                    System.out.println(total);
+                }
+            }
+        }
+
+      return total; 
   }
 }
+
+
+// java -cp src Tallyer < responses.txt  // when you run this it is telling the code to read the responses.txt
+// javac src/Tallyer.java // compile code default
