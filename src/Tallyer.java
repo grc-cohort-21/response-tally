@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -46,14 +47,20 @@ public class Tallyer {
      * This method takes a list of topics. It returns a Map where the keys are topics
      * and the values are how many times they appear in the input.
      *
+     *
      * @param topics a list of strings representing the topics to be tallied
      * @return a map containing topics as keys and their occurrence counts as values
      */
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
         // TODO: Implement this method
+        Map<String, Integer> topicCountMap =new HashMap<>();
 
-        return null;
+        for(String topic : topics){
+            topicCountMap.put(topic, topicCountMap.getOrDefault(topic, 0)+1);
+        }
+    
+        return topicCountMap;
     }
 
     /**
@@ -71,7 +78,27 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
       // WAVE 2
       // TODO: Implement this method
+      Map<String, Integer> submissionCounts = new HashMap<>();
+      Map<String, Integer> topicCountMap = new HashMap<>();
 
-      return null;
+      // Count how many topics each user submitted
+      for (String id : ids) {
+          submissionCounts.put(id, submissionCounts.getOrDefault(id, 0) + 1);
+      }
+
+      // Tally topics only for users with exactly 2 submissions
+      for (int i = 0; i < ids.size(); i++) {
+          String id = ids.get(i);
+          if (submissionCounts.get(id) == 2) {
+              String topic = topics.get(i);
+              topicCountMap.put(topic, topicCountMap.getOrDefault(topic, 0) + 1);
+          }
+      }
+
+      return topicCountMap;
   }
+
+      
+
+  
 }
