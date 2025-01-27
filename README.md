@@ -34,7 +34,7 @@ Once you have completed the below section (Modifying the Code), please open a Pu
 ## Modifying the code
 
 ### Wave 1 (Required)
-Implement `tallyTopics`. Read the Javadoc carefully to understand what the method is meant to do. Make sure to compile your code each time before running it!
+Implement `tallyTopics`. Read the Javadoc carefully to understand what the method is meant to do. Make sure to compile your code each time before running it!!
 
 For the sample file, a correct output would look similar to:
 ```

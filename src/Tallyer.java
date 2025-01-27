@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -52,8 +53,19 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
         // TODO: Implement this method
-
-        return null;
+        Map<String, Integer> myTopicCounts = new HashMap<>();
+        for (String topic : topics)
+        {
+            if (myTopicCounts.containsKey(topic))
+            {
+                myTopicCounts.put(topic, myTopicCounts.get(topic)+1);
+            }
+            else
+            {
+                myTopicCounts.put(topic, 1);
+            }
+        }
+        return myTopicCounts;
     }
 
     /**
@@ -71,7 +83,43 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
       // WAVE 2
       // TODO: Implement this method
+        System.out.println("");
+        Map<String, Integer> theirVotesMap = new HashMap<>();
+        List<String> validIds = new ArrayList<String>();
+      
+        //System.out.println("tallyTopics(id): " + tallyTopics(ids));
 
-      return null;
+        for (String id : tallyTopics(ids).keySet())
+        {
+            if (tallyTopics(ids).get(id) == 2)
+            {
+                validIds.add(id);
+            }
+        }
+
+        //System.out.println("ValidIds (list): " + validIds);
+        //System.out.println("example output: {maps=1, loops=1, arrays=1}");
+
+        Map<String, Integer> myMap = new HashMap<>(); // final map that will have the name of the votes and how many times
+        int count = 0;
+        for (int i=0; i < ids.size(); i++)
+        {
+            if (validIds.contains(ids.get(i)))
+            {
+                if (theirVotesMap.containsKey(ids.get(i)))
+                {
+                    theirVotesMap.put(ids.get(i), theirVotesMap.get(ids.get(i))+1);
+                    myMap.put(topics.get(i), count+1); // myMap.put(topics.get(i), myMap.get(topics.get(i));
+                }
+                else
+                {
+                    theirVotesMap.put(ids.get(i), 1);
+                    myMap.put(topics.get(i), 1);
+                    count = 1;
+                }
+            }
+        }
+        //System.out.println(theirVotesMap);
+        return myMap;
   }
 }
