@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -16,6 +17,7 @@ public class Tallyer {
      *
      * @param args command-line arguments (not used in this implementation)
      */
+    @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
@@ -50,10 +52,11 @@ public class Tallyer {
      * @return a map containing topics as keys and their occurrence counts as values
      */
     public static Map<String, Integer> tallyTopics(List<String> topics) {
-        // WAVE 1
-        // TODO: Implement this method
-
-        return null;
+        Map<String,Integer> count = new HashMap<>();
+        for (String topic : topics) {
+            count.put(topic, count.get(topic) + 1);
+        }
+        return count;
     }
 
     /**
@@ -69,9 +72,21 @@ public class Tallyer {
      * @return a map containing topics as keys and their occurrence counts as values
      */
     public static Map<String, Integer> tallyTopicsFiltered(List<String> ids, List<String> topics) {
-      // WAVE 2
-      // TODO: Implement this method
-
-      return null;
+        Map<String, Integer> topicTally = new HashMap<>();
+        Map<String, Integer> counter = new HashMap<>();
+        for (String id : ids) {
+            counter.put(id, counter.get(id)+1);
+        }
+        for (int i=0;i < topics.size();i++) {
+            String ident = ids.get(i);
+            String topic = topics.get(i);
+            if (counter.get(ident) == 2) {
+                topicTally.put(topic,topicTally.get(topic)+1);
+            }
+            else {
+                topicTally.put(topic, 1);
+            }
+        }
+        return topicTally;
   }
 }
